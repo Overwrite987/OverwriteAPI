@@ -1,0 +1,6 @@
+name: OverwriteAPI
+version: '1.0'
+main: ru.overwrite.api.OvApi
+api-version: '1.16'
+folia-supported: true
+softdepend: [WorldEdit, WorldGuard]
