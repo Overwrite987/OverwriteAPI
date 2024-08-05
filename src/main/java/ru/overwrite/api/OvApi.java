@@ -8,7 +8,7 @@ import ru.overwrite.api.logging.PaperLogger;
 
 public final class OvApi extends JavaPlugin {
 
-    private final Logger pluginLogger = VersionUtils.FOLIA ? new PaperLogger() : new BukkitLogger();
+    private static final Logger pluginLogger = VersionUtils.FOLIA ? new PaperLogger() : new BukkitLogger();
 
     @Override
     public void onEnable() {
