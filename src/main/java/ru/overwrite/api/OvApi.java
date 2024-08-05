@@ -8,7 +8,7 @@ import ru.overwrite.api.logging.PaperLogger;
 
 public final class OvApi extends JavaPlugin {
 
-    public static final Logger pluginLogger = VersionUtils.FOLIA ? new PaperLogger() : new BukkitLogger();
+    private static final Logger pluginLogger = VersionUtils.FOLIA ? new PaperLogger() : new BukkitLogger();
 
     @Override
     public void onEnable() {
@@ -22,5 +22,9 @@ public final class OvApi extends JavaPlugin {
     @Override
     public void onDisable() {
         pluginLogger.info(this, "§aУспешно отключено!");
+    }
+
+    public static Logger getPluginLogger() {
+        return pluginLogger;
     }
 }
