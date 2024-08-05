@@ -7,6 +7,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -59,6 +60,37 @@ public class RegionUtils {
             regionManager.removeRegion(regionName);
         } else {
             Bukkit.getConsoleSender().sendMessage("Регион с именем " + regionName + " не найден в мире " + worldName);
+        }
+    }
+
+    public static BlockVector3 getRegionCenter(ProtectedRegion region) {
+        if (region == null) {
+            return null;
+        }
+
+        BlockVector3 minPoint = region.getMinimumPoint();
+        BlockVector3 maxPoint = region.getMaximumPoint();
+
+        double centerX = (minPoint.getX() + maxPoint.getX()) / 2.0;
+        double centerY = (minPoint.getY() + maxPoint.getY()) / 2.0;
+        double centerZ = (minPoint.getZ() + maxPoint.getZ()) / 2.0;
+
+        return BlockVector3.at(centerX, centerY, centerZ);
+    }
+
+    public static BlockVector3 getMinPoint(ProtectedRegion region) {
+        if (region != null) {
+            return region.getMinimumPoint();
+        } else {
+            return null;
+        }
+    }
+
+    public static BlockVector3 getMaxPoint(ProtectedRegion region) {
+        if (region != null) {
+            return region.getMaximumPoint();
+        } else {
+            return null;
         }
     }
 }
