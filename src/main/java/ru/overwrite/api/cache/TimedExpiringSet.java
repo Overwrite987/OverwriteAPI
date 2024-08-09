@@ -8,25 +8,25 @@ import java.util.concurrent.TimeUnit;
 
 public class TimedExpiringSet<E> {
 
-    private final Cache<E, Long> cache;
+    private final Cache<E, ExpiringValue<E>> cache;
     private final TimeUnit unit;
 
     public TimedExpiringSet(TimeUnit unit) {
         this.unit = unit;
         this.cache = CaffeineFactory.newBuilder()
-                .expireAfter(new Expiry<E, Long>() {
+                .expireAfter(new Expiry<E, ExpiringValue<E>>() {
                     @Override
-                    public long expireAfterCreate(E key, Long expiryTime, long currentTime) {
-                        return expiryTime;
+                    public long expireAfterCreate(E key, ExpiringValue<E> value, long currentTime) {
+                        return value.expiryDuration();
                     }
 
                     @Override
-                    public long expireAfterUpdate(E key, Long expiryTime, long currentTime, long currentDuration) {
-                        return expiryTime;
+                    public long expireAfterUpdate(E key, ExpiringValue<E> value, long currentTime, long currentDuration) {
+                        return value.expiryDuration();
                     }
 
                     @Override
-                    public long expireAfterRead(E key, Long expiryTime, long currentTime, long currentDuration) {
+                    public long expireAfterRead(E key, ExpiringValue<E> value, long currentTime, long currentDuration) {
                         return currentDuration;
                     }
                 })
@@ -36,7 +36,7 @@ public class TimedExpiringSet<E> {
     public boolean add(E item, long duration) {
         boolean present = contains(item);
         long expiryDuration = unit.toNanos(duration);
-        this.cache.put(item, expiryDuration);
+        this.cache.put(item, new ExpiringValue<>(item, expiryDuration));
         return !present;
     }
 
@@ -54,5 +54,8 @@ public class TimedExpiringSet<E> {
 
     public void clear() {
         this.cache.invalidateAll();
+    }
+
+    private record ExpiringValue<V>(V value, long expiryDuration) {
     }
 }
