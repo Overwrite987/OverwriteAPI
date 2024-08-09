@@ -2,7 +2,6 @@ package ru.overwrite.api.cache;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Expiry;
-import ru.overwrite.api.cache.CaffeineFactory;
 
 import java.util.concurrent.TimeUnit;
 
