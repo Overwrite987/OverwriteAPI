@@ -32,4 +32,8 @@ public class ExpiringSet<E> {
     public void remove(E item) {
         this.cache.invalidate(item);
     }
+
+    public void clear() {
+        this.cache.invalidateAll();
+    }
 }
