@@ -40,7 +40,7 @@ public class ActionRegistry {
         return type.instance(matcher.group(2), plugin);
     }
 
-    private List<Action> getActionList(String pluginName, List<String> actionStrings) {
+    public List<Action> getActionList(String pluginName, List<String> actionStrings) {
         List<Action> actions = new ArrayList<>(actionStrings.size());
         for (String actionStr : actionStrings) {
             actionStr = pluginName+":"+actionStr;
