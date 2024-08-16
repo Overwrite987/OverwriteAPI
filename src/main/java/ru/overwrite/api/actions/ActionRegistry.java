@@ -5,9 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.overwrite.api.OvApi;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +38,19 @@ public class ActionRegistry {
         ActionType type = getType(matcher.group(1));
         if (type == null) return null;
         return type.instance(matcher.group(2), plugin);
+    }
+
+    private List<Action> getActionList(String pluginName, List<String> actionStrings) {
+        List<Action> actions = new ArrayList<>(actionStrings.size());
+        for (String actionStr : actionStrings) {
+            actionStr = pluginName+":"+actionStr;
+            try {
+                actions.add(Objects.requireNonNull(resolveAction(actionStr), "Type doesn't exist"));
+            } catch (Exception ex) {
+                plugin.getSLF4JLogger().warn("Couldn't create action for string '{}'", actionStr, ex);
+            }
+        }
+        return actions;
     }
 }
 
