@@ -3,6 +3,7 @@ package ru.overwrite.api.actions;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.overwrite.api.OvApi;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -14,10 +15,10 @@ public class ActionRegistry {
 
     private static final Pattern ACTION_PATTERN = Pattern.compile("\\[(\\w+)] ?(.*)");
 
-    private final JavaPlugin plugin;
+    private final OvApi plugin;
     private final Map<String, ActionType> types;
 
-    public ActionRegistry(JavaPlugin plugin) {
+    public ActionRegistry(OvApi plugin) {
         this.plugin = plugin;
         this.types = new HashMap<>();
     }
