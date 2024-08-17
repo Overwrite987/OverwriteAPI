@@ -34,4 +34,8 @@ public final class OvApi extends JavaPlugin {
         pluginLogger.info(this, "§aУспешно отключено!");
     }
 
+    public ActionRegistry createActionRegistry(JavaPlugin plugin) {
+        return new ActionRegistry(plugin);
+    }
+
 }

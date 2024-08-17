@@ -13,10 +13,10 @@ public class ActionRegistry {
 
     private static final Pattern ACTION_PATTERN = Pattern.compile("\\[(\\S+)] ?(.*)");
 
-    private final OvApi plugin;
+    private final JavaPlugin plugin;
     private final Map<String, ActionType> types;
 
-    public ActionRegistry(OvApi plugin) {
+    public ActionRegistry(JavaPlugin plugin) {
         this.plugin = plugin;
         this.types = new HashMap<>();
     }
@@ -38,6 +38,10 @@ public class ActionRegistry {
         ActionType type = getType(matcher.group(1));
         if (type == null) return null;
         return type.instance(matcher.group(2), plugin);
+    }
+
+    public List<Action> getActionList(List<String> actionStrings) {
+        return getActionList(plugin.getName(), actionStrings);
     }
 
     public List<Action> getActionList(String pluginName, List<String> actionStrings) {

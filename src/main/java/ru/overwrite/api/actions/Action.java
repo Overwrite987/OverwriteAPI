@@ -7,4 +7,3 @@ public interface Action {
     void perform(@NotNull Object... params);
 
 }
-

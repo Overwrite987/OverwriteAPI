@@ -9,4 +9,3 @@ public interface ActionType extends Keyed {
     @NotNull Action instance(@NotNull String context, @NotNull JavaPlugin plugin);
 
 }
-
