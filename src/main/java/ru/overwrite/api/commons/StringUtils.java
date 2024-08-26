@@ -2,6 +2,7 @@ package ru.overwrite.api.commons;
 
 import net.md_5.bungee.api.ChatColor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +13,10 @@ public class StringUtils {
 
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([a-fA-F\\d]{6})");
 
-    public static String colorize(@NotNull String message) {
+    public static String colorize(@Nullable String message) {
+        if (message == null || message.isEmpty() || message.isBlank()) {
+            return message;
+        }
         if (VersionUtils.SUB_VERSION >= 16) {
             Matcher matcher = HEX_PATTERN.matcher(message);
             StringBuilder builder = new StringBuilder(message.length() + 32);
@@ -33,8 +37,8 @@ public class StringUtils {
     }
 
     // Original - org.apache.commons.lang3.StringUtils#isNumeric
-    public static boolean isNumeric(@NotNull CharSequence cs) {
-        if (cs.isEmpty()) {
+    public static boolean isNumeric(@Nullable CharSequence cs) {
+        if (cs == null || cs.isEmpty()) {
             return false;
         } else {
             int sz = cs.length();
@@ -49,8 +53,8 @@ public class StringUtils {
         }
     }
 
-    public static String replaceEach(@NotNull String text, @NotNull String[] searchList, @NotNull String[] replacementList) {
-        if (text.isEmpty() || searchList.length == 0 || replacementList.length == 0) {
+    public static String replaceEach(@Nullable String text, @NotNull String[] searchList, @NotNull String[] replacementList) {
+        if (text == null || text.isEmpty() || searchList.length == 0 || replacementList.length == 0) {
             return text;
         }
 
