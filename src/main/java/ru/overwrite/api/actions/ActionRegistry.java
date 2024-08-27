@@ -3,7 +3,6 @@ package ru.overwrite.api.actions;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.overwrite.api.OvApi;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -37,19 +36,14 @@ public class ActionRegistry {
         if (!matcher.matches()) return null;
         ActionType type = getType(matcher.group(1));
         if (type == null) return null;
-        return type.instance(matcher.group(2), plugin);
+        return type.instance(matcher.group(2));
     }
 
-    public List<Action> getActionList(List<String> actionStrings) {
-        return getActionList(plugin.getName(), actionStrings);
-    }
-
-    public List<Action> getActionList(String pluginName, List<String> actionStrings) {
+    public List<Action> getActionList(@NotNull List<String> actionStrings) {
         List<Action> actions = new ArrayList<>(actionStrings.size());
         for (String actionStr : actionStrings) {
-            actionStr = pluginName+":"+actionStr;
             try {
-                actions.add(Objects.requireNonNull(resolveAction(actionStr), "Type doesn't exist"));
+                actions.add(Objects.requireNonNull(this.resolveAction(actionStr), "Type doesn't exist"));
             } catch (Exception ex) {
                 plugin.getSLF4JLogger().warn("Couldn't create action for string '{}'", actionStr, ex);
             }
