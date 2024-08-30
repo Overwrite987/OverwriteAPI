@@ -47,13 +47,11 @@ public class TimeUtils {
             result.append(hours).append(hoursMark);
         }
 
-        if (minutes > 0 || (hours > 0 && seconds == 0)) {
+        if (minutes > 0 || hours > 0 ) {
             result.append(minutes).append(minutesMark);
         }
 
-        if (seconds > 0 || (minutes == 0 && hours == 0)) {
-            result.append(seconds).append(secondsMark);
-        }
+        result.append(seconds).append(secondsMark);
 
         return result.toString();
     }
