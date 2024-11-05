@@ -1,8 +1,5 @@
 package ru.overwrite.api.commons;
 
-import it.unimi.dsi.fastutil.chars.CharOpenHashSet;
-import it.unimi.dsi.fastutil.chars.CharSet;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +10,7 @@ public class StringUtils {
 
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([a-fA-F\\d]{6})");
     private static final char COLOR_CHAR = '§';
-    
+
     public static String colorize(String message) {
         if (message == null || message.isEmpty()) {
             return message;
@@ -35,19 +32,11 @@ public class StringUtils {
         return translateAlternateColorCodes('&', message);
     }
 
-    private static final CharSet CODES = new CharOpenHashSet(new char[]{
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-            'a', 'b', 'c', 'd', 'e', 'f',
-            'A', 'B', 'C', 'D', 'E', 'F',
-            'k', 'l', 'm', 'n', 'o', 'r', 'x',
-            'K', 'L', 'M', 'N', 'O', 'R', 'X'
-    });
-
     public static String translateAlternateColorCodes(char altColorChar, String textToTranslate) {
         char[] b = textToTranslate.toCharArray();
 
         for (int i = 0, length = b.length - 1; i < length; ++i) {
-            if (b[i] == altColorChar && CODES.contains(b[i + 1])) {
+            if (b[i] == altColorChar && isValidColorCharacter(b[i + 1])) {
                 b[i++] = '§';
                 b[i] = Character.toLowerCase(b[i]);
             }
@@ -56,21 +45,94 @@ public class StringUtils {
         return new String(b);
     }
 
-    // Original - org.apache.commons.lang3.StringUtils#isNumeric
+    private static boolean isValidColorCharacter(char c) {
+        return (c >= '0' && c <= '9') ||
+                (c >= 'a' && c <= 'f') ||
+                c == 'r' ||
+                (c >= 'k' && c <= 'o') ||
+                c == 'x' ||
+                (c >= 'A' && c <= 'F') ||
+                c == 'R' ||
+                (c >= 'K' && c <= 'O') ||
+                c == 'X';
+    }
+
+    public static String getTime(long time, String hoursMark, String minutesMark, String secondsMark) {
+        final long hours = getHours(time);
+        final long minutes = getMinutes(time);
+        final long seconds = getSeconds(time);
+
+        final StringBuilder result = new StringBuilder();
+
+        if (hours > 0) {
+            result.append(hours).append(hoursMark);
+        }
+
+        if (minutes > 0 || hours > 0) {
+            result.append(minutes).append(minutesMark);
+        }
+
+        result.append(seconds).append(secondsMark);
+
+        return result.toString();
+    }
+
+    public static long getHours(long time) {
+        return time / 3600;
+    }
+
+    public static long getMinutes(long time) {
+        return (time % 3600) / 60;
+    }
+
+    public static long getSeconds(long time) {
+        return time % 60;
+    }
+
+    public static String getTime(int time, String hoursMark, String minutesMark, String secondsMark) {
+        final int hours = getHours(time);
+        final int minutes = getMinutes(time);
+        final int seconds = getSeconds(time);
+
+        final StringBuilder result = new StringBuilder();
+
+        if (hours > 0) {
+            result.append(hours).append(hoursMark);
+        }
+
+        if (minutes > 0 || hours > 0) {
+            result.append(minutes).append(minutesMark);
+        }
+
+        result.append(seconds).append(secondsMark);
+
+        return result.toString();
+    }
+
+    public static int getHours(int time) {
+        return time / 3600;
+    }
+
+    public static int getMinutes(int time) {
+        return (time % 3600) / 60;
+    }
+
+    public static int getSeconds(int time) {
+        return time % 60;
+    }
+
     public static boolean isNumeric(@Nullable CharSequence cs) {
         if (cs == null || cs.isEmpty()) {
             return false;
-        } else {
-            int sz = cs.length();
-
-            for (int i = 0; i < sz; ++i) {
-                if (!Character.isDigit(cs.charAt(i))) {
-                    return false;
-                }
-            }
-
-            return true;
         }
+        int sz = cs.length();
+
+        for (int i = 0; i < sz; ++i) {
+            if (!Character.isDigit(cs.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static String replaceEach(@Nullable String text, @NotNull String[] searchList, @NotNull String[] replacementList) {
@@ -82,7 +144,7 @@ public class StringUtils {
             throw new IllegalArgumentException("Search and replacement arrays must have the same length.");
         }
 
-        StringBuilder result = new StringBuilder(text);
+        final StringBuilder result = new StringBuilder(text);
 
         for (int i = 0; i < searchList.length; i++) {
             String search = searchList[i];
