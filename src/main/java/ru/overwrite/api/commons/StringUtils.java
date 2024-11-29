@@ -11,14 +11,14 @@ public class StringUtils {
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([a-fA-F\\d]{6})");
     private static final char COLOR_CHAR = '§';
 
-    public static String colorize(String message) {
+    public static String colorize(@Nullable String message) {
         if (message == null || message.isEmpty()) {
             return message;
         }
-        Matcher matcher = HEX_PATTERN.matcher(message);
-        StringBuilder builder = new StringBuilder(message.length() + 32);
+        final Matcher matcher = HEX_PATTERN.matcher(message);
+        final StringBuilder builder = new StringBuilder(message.length() + 32);
         while (matcher.find()) {
-            String group = matcher.group(1);
+            final String group = matcher.group(1);
             matcher.appendReplacement(builder,
                     COLOR_CHAR + "x" +
                             COLOR_CHAR + group.charAt(0) +
@@ -33,12 +33,12 @@ public class StringUtils {
     }
 
     public static String translateAlternateColorCodes(char altColorChar, String textToTranslate) {
-        char[] b = textToTranslate.toCharArray();
+        final char[] b = textToTranslate.toCharArray();
 
         for (int i = 0, length = b.length - 1; i < length; ++i) {
             if (b[i] == altColorChar && isValidColorCharacter(b[i + 1])) {
-                b[i++] = '§';
-                b[i] = Character.toLowerCase(b[i]);
+                b[i++] = COLOR_CHAR;
+                b[i] |= 0x20;
             }
         }
 
@@ -119,6 +119,13 @@ public class StringUtils {
 
     public static int getSeconds(int time) {
         return time % 60;
+    }
+
+    public static boolean startsWithIgnoreCase(@Nullable String str, @Nullable String prefix) {
+        if (str == null || prefix == null) {
+            return false;
+        }
+        return str.regionMatches(true, 0, prefix, 0, prefix.length());
     }
 
     public static boolean isNumeric(@Nullable CharSequence cs) {
