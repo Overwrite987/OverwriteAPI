@@ -15,11 +15,11 @@ public class WorldUtils {
             return null;
         }
         World world = Bukkit.getWorld(location[0]);
-        double x = location.length >= 2 ? Double.parseDouble(location[1]) : 0;
-        double y = location.length >= 3 ? Double.parseDouble(location[2]) : 0;
-        double z = location.length >= 4 ? Double.parseDouble(location[3]) : 0;
-        float yaw = location.length >= 5 ? Float.parseFloat(location[4]) : 0;
-        float pitch = location.length == 6 ? Float.parseFloat(location[5]) : 0;
+        double x = location.length >= 2 ? Double.parseDouble(location[1]) : 0D;
+        double y = location.length >= 3 ? Double.parseDouble(location[2]) : 0D;
+        double z = location.length >= 4 ? Double.parseDouble(location[3]) : 0D;
+        float yaw = location.length >= 5 ? Float.parseFloat(location[4]) : 0F;
+        float pitch = location.length == 6 ? Float.parseFloat(location[5]) : 0F;
         return new Location(world, x, y, z, yaw, pitch);
     }
 

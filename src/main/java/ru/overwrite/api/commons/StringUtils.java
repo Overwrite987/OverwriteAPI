@@ -121,13 +121,6 @@ public class StringUtils {
         return time % 60;
     }
 
-    public static boolean startsWithIgnoreCase(@Nullable String str, @Nullable String prefix) {
-        if (str == null || prefix == null) {
-            return false;
-        }
-        return str.regionMatches(true, 0, prefix, 0, prefix.length());
-    }
-
     public static boolean isNumeric(@Nullable CharSequence cs) {
         if (cs == null || cs.isEmpty()) {
             return false;
