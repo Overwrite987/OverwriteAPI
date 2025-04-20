@@ -45,12 +45,35 @@ public class StringUtils {
         return new String(b);
     }
 
-    private static boolean isValidColorCharacter(char c) {
-        return switch (c) {
-            case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D',
-                 'E', 'F', 'r', 'R', 'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'x', 'X' -> true;
-            default -> false;
+    private static final boolean[] COLOR_CHARS_FLAGS = new boolean[128];
+
+    static {
+        for (char c = '0'; c <= '9'; c++) {
+            COLOR_CHARS_FLAGS[c] = true;
+        }
+
+        for (char c = 'a'; c <= 'f'; c++) {
+            COLOR_CHARS_FLAGS[c] = true;
+        }
+
+        for (char c = 'A'; c <= 'F'; c++) {
+            COLOR_CHARS_FLAGS[c] = true;
+        }
+
+        int[] specialSymbols = {
+                'r', 'R',
+                'k', 'l', 'm', 'n', 'o',
+                'K', 'L', 'M', 'N', 'O',
+                'x', 'X'
         };
+
+        for (int sym : specialSymbols) {
+            COLOR_CHARS_FLAGS[sym] = true;
+        }
+    }
+
+    public static boolean isValidColorCharacter(char c) {
+        return COLOR_CHARS_FLAGS[c];
     }
 
     public static String getTime(long time, String hoursMark, String minutesMark, String secondsMark) {
