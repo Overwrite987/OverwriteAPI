@@ -63,7 +63,8 @@ public class StringUtils {
         int[] specialSymbols = {
                 'r', 'R',
                 'k', 'l', 'm', 'n', 'o',
-                'K', 'L', 'M', 'N', 'O'
+                'K', 'L', 'M', 'N', 'O',
+                'x', 'X'
         };
 
         for (int sym : specialSymbols) {
