@@ -1,5 +1,6 @@
 package ru.overwrite.api.commons;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -7,9 +8,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
+@UtilityClass
 public class EffectUtils {
 
-    public static PotionEffect parseEffect(@NotNull String[] effect) {
+    public PotionEffect parseEffect(@NotNull String[] effect) {
         if (effect.length > 3) {
             Bukkit.getConsoleSender().sendMessage("Unable to parse location. " + Arrays.toString(effect));
             return null;

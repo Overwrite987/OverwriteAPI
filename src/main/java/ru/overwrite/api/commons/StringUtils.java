@@ -1,17 +1,19 @@
 package ru.overwrite.api.commons;
 
+import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@UtilityClass
 public class StringUtils {
 
-    private static final Pattern HEX_PATTERN = Pattern.compile("&#([a-fA-F\\d]{6})");
-    private static final char COLOR_CHAR = '§';
+    private final Pattern HEX_PATTERN = Pattern.compile("&#([a-fA-F\\d]{6})");
+    private final char COLOR_CHAR = '§';
 
-    public static String colorize(@Nullable String message) {
+    public String colorize(@Nullable String message) {
         if (message == null || message.isEmpty()) {
             return message;
         }
@@ -32,7 +34,7 @@ public class StringUtils {
         return translateAlternateColorCodes('&', message);
     }
 
-    public static String translateAlternateColorCodes(char altColorChar, String textToTranslate) {
+    public String translateAlternateColorCodes(char altColorChar, String textToTranslate) {
         final char[] b = textToTranslate.toCharArray();
 
         for (int i = 0, length = b.length - 1; i < length; ++i) {
@@ -45,38 +47,15 @@ public class StringUtils {
         return new String(b);
     }
 
-    private static final boolean[] COLOR_CHARS_FLAGS = new boolean[128];
-
-    static {
-        for (char c = '0'; c <= '9'; c++) {
-            COLOR_CHARS_FLAGS[c] = true;
-        }
-
-        for (char c = 'a'; c <= 'f'; c++) {
-            COLOR_CHARS_FLAGS[c] = true;
-        }
-
-        for (char c = 'A'; c <= 'F'; c++) {
-            COLOR_CHARS_FLAGS[c] = true;
-        }
-
-        int[] specialSymbols = {
-                'r', 'R',
-                'k', 'l', 'm', 'n', 'o',
-                'K', 'L', 'M', 'N', 'O',
-                'x', 'X'
+    private boolean isValidColorCharacter(char c) {
+        return switch (c) {
+            case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D',
+                 'E', 'F', 'r', 'R', 'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'x', 'X' -> true;
+            default -> false;
         };
-
-        for (int sym : specialSymbols) {
-            COLOR_CHARS_FLAGS[sym] = true;
-        }
     }
 
-    public static boolean isValidColorCharacter(char c) {
-        return COLOR_CHARS_FLAGS[c];
-    }
-
-    public static String getTime(long time, String hoursMark, String minutesMark, String secondsMark) {
+    public String getTime(long time, String hoursMark, String minutesMark, String secondsMark) {
         final long hours = getHours(time);
         final long minutes = getMinutes(time);
         final long seconds = getSeconds(time);
@@ -96,19 +75,19 @@ public class StringUtils {
         return result.toString();
     }
 
-    public static long getHours(long time) {
+    public long getHours(long time) {
         return time / 3600;
     }
 
-    public static long getMinutes(long time) {
+    public long getMinutes(long time) {
         return (time % 3600) / 60;
     }
 
-    public static long getSeconds(long time) {
+    public long getSeconds(long time) {
         return time % 60;
     }
 
-    public static String getTime(int time, String hoursMark, String minutesMark, String secondsMark) {
+    public String getTime(int time, String hoursMark, String minutesMark, String secondsMark) {
         final int hours = getHours(time);
         final int minutes = getMinutes(time);
         final int seconds = getSeconds(time);
@@ -128,19 +107,19 @@ public class StringUtils {
         return result.toString();
     }
 
-    public static int getHours(int time) {
+    public int getHours(int time) {
         return time / 3600;
     }
 
-    public static int getMinutes(int time) {
+    public int getMinutes(int time) {
         return (time % 3600) / 60;
     }
 
-    public static int getSeconds(int time) {
+    public int getSeconds(int time) {
         return time % 60;
     }
 
-    public static boolean isNumeric(@Nullable CharSequence cs) {
+    public boolean isNumeric(@Nullable CharSequence cs) {
         if (cs == null || cs.isEmpty()) {
             return false;
         }
@@ -154,7 +133,7 @@ public class StringUtils {
         return true;
     }
 
-    public static String replaceEach(@Nullable String text, @NotNull String[] searchList, @NotNull String[] replacementList) {
+    public String replaceEach(@Nullable String text, @NotNull String[] searchList, @NotNull String[] replacementList) {
         if (text == null || text.isEmpty() || searchList.length == 0 || replacementList.length == 0) {
             return text;
         }

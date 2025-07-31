@@ -1,5 +1,6 @@
 package ru.overwrite.api.player;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -9,9 +10,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
+@UtilityClass
 public class PlayerUtils {
 
-    public static void sendTitleMessage(@NotNull String[] titleMessages, @NotNull Player p) {
+    public void sendTitleMessage(@NotNull String[] titleMessages, @NotNull Player p) {
         if (titleMessages.length > 5) {
             Bukkit.getConsoleSender().sendMessage("Unable to send title. " + Arrays.toString(titleMessages));
             return;
@@ -24,7 +26,7 @@ public class PlayerUtils {
         p.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 
-    public static void sendSound(@NotNull String[] soundArgs, @NotNull Player p) {
+    public void sendSound(@NotNull String[] soundArgs, @NotNull Player p) {
         if (soundArgs.length > 3) {
             Bukkit.getConsoleSender().sendMessage("Unable to send sound. " + Arrays.toString(soundArgs));
             return;
@@ -35,7 +37,7 @@ public class PlayerUtils {
         p.playSound(p.getLocation(), sound, volume, pitch);
     }
 
-    public static void giveEffect(@NotNull String[] effectArgs, @NotNull Player p) {
+    public void giveEffect(@NotNull String[] effectArgs, @NotNull Player p) {
         if (effectArgs.length > 3) {
             Bukkit.getConsoleSender().sendMessage("Unable to give effect. " + Arrays.toString(effectArgs));
             return;
@@ -47,7 +49,7 @@ public class PlayerUtils {
         p.addPotionEffect(effect);
     }
 
-    public static String getIp(@NotNull Player player) {
+    public String getIp(@NotNull Player player) {
         return player.getAddress().getAddress().getHostAddress();
     }
 }

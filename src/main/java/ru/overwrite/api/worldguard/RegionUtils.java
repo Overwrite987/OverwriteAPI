@@ -9,14 +9,16 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
+@UtilityClass
 public class RegionUtils {
 
-    public static ApplicableRegionSet getApplicableRegions(@NotNull Location location) {
+    public ApplicableRegionSet getApplicableRegions(@NotNull Location location) {
         RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer()
                 .get(BukkitAdapter.adapt(location.getWorld()));
         if (regionManager == null || regionManager.getRegions().isEmpty())
@@ -24,7 +26,7 @@ public class RegionUtils {
         return regionManager.getApplicableRegions(BukkitAdapter.asBlockVector(location));
     }
 
-    public static void createRegion(@NotNull Location centerLocation, int radius, @NotNull String regionName) {
+    public void createRegion(@NotNull Location centerLocation, int radius, @NotNull String regionName) {
 
         World world = centerLocation.getWorld();
         BukkitWorld bukkitWorld = new BukkitWorld(world);
@@ -37,7 +39,7 @@ public class RegionUtils {
         regionManager.addRegion(protectedRegion);
     }
 
-    public static @NotNull ProtectedCuboidRegion createProtectedCuboidRegion(@NotNull Location centerLocation, int radius, @NotNull String regionName) {
+    public @NotNull ProtectedCuboidRegion createProtectedCuboidRegion(@NotNull Location centerLocation, int radius, @NotNull String regionName) {
         BlockVector3 minPoint = BlockVector3.at(
                 centerLocation.getX() - radius,
                 centerLocation.getY() - radius,
@@ -53,7 +55,7 @@ public class RegionUtils {
         return new ProtectedCuboidRegion(regionName, minPoint, maxPoint);
     }
 
-    public static void deleteRegion(@NotNull String regionName, @NotNull String worldName) {
+    public void deleteRegion(@NotNull String regionName, @NotNull String worldName) {
         RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(Bukkit.getWorld(worldName)));
 
         if (regionManager != null && regionManager.hasRegion(regionName)) {
@@ -63,7 +65,7 @@ public class RegionUtils {
         }
     }
 
-    public static BlockVector3 getRegionCenter(ProtectedRegion region) {
+    public BlockVector3 getRegionCenter(ProtectedRegion region) {
         if (region == null) {
             return null;
         }
@@ -78,7 +80,7 @@ public class RegionUtils {
         return BlockVector3.at(centerX, centerY, centerZ);
     }
 
-    public static BlockVector3 getMinPoint(ProtectedRegion region) {
+    public BlockVector3 getMinPoint(ProtectedRegion region) {
         if (region != null) {
             return region.getMinimumPoint();
         } else {
@@ -86,7 +88,7 @@ public class RegionUtils {
         }
     }
 
-    public static BlockVector3 getMaxPoint(ProtectedRegion region) {
+    public BlockVector3 getMaxPoint(ProtectedRegion region) {
         if (region != null) {
             return region.getMaximumPoint();
         } else {
